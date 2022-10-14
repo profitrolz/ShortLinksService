@@ -6,6 +6,8 @@ import com.github.shortlinks.dto.LinkStatDto;
 import com.github.shortlinks.entity.ShortLink;
 import com.github.shortlinks.service.abstracts.LinkGenerator;
 import com.github.shortlinks.service.abstracts.LinkService;
+import com.github.shortlinks.service.components.Cache;
+import com.github.shortlinks.service.components.LruCache;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,26 +23,31 @@ public class LinkServiceImpl implements LinkService {
     private final ShortLinkDao shortLinkDao;
 
     private final LinkGenerator linkGenerator;
+    private final Cache<String, String> cache;
     @Value("${app.shortlinklength}")
     private int linkLength;
 
-    public LinkServiceImpl(GenericDao<ShortLink, Long> genericDao, ShortLinkDao shortLinkDao, LinkGenerator linkGenerator) {
+    public LinkServiceImpl(ShortLinkDao shortLinkDao, LinkGenerator linkGenerator) {
         this.shortLinkDao = shortLinkDao;
         this.linkGenerator = linkGenerator;
+        this.cache =  new LruCache(shortLinkDao::getOriginalLinkByShort);
     }
 
     @Override
     @Transactional
     public String generateShortLink(String originalLink) {
-        return shortLinkDao.getByOriginalLink(originalLink)
+
+        String link =  shortLinkDao.getByOriginalLink(originalLink)
                 .map(ShortLink::getShortLink)
                 .orElseGet(() -> generateAndSaveShortLink(originalLink));
+        return link;
     }
 
     @Override
     public String getOriginalLinkByShort(String shortLink) {
-        return shortLinkDao.getOriginalLinkByShort(shortLink);
+        return cache.readOrCompute(shortLink);
     }
+
 
 
     private String generateAndSaveShortLink(String originalLink) {

@@ -27,6 +27,8 @@ public class LinkServiceTest extends ShortLinksApplicationTests {
         String originalLink = "http://orig.link";
         String shortLink = linkService.generateShortLink(originalLink);
         Mockito.when(shortLinkDao.getOriginalLinkByShort(shortLink)).thenReturn("http://orig.link");
+        linkService.getOriginalLinkByShort(shortLink);
+        Mockito.when(shortLinkDao.getOriginalLinkByShort(shortLink)).thenReturn("http://fake.link");
         String newOriginalLink = linkService.getOriginalLinkByShort(shortLink);
         Assertions.assertSame(originalLink, newOriginalLink);
     }
