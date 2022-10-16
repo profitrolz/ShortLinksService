@@ -15,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
-public class ShortLinksApplicationTests {
+public abstract class ShortLinksApplicationTests {
 
     @Autowired
     protected ObjectMapper objectMapper;
@@ -37,9 +37,5 @@ public class ShortLinksApplicationTests {
         registry.add("spring.datasource.password", container::getPassword);
     }
 
-    @Test
-    public void do_test() {
-
-    }
 
 }

@@ -1,5 +1,9 @@
 package com.github.shortlinks.dao.abstracts;
 
+import com.github.shortlinks.dao.util.SingleResultUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -12,6 +16,7 @@ public abstract class AbstractGenericDao<T, PK> implements GenericDao<T, PK> {
 
     @PersistenceContext
     protected EntityManager entityManager;
+
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
@@ -20,6 +25,17 @@ public abstract class AbstractGenericDao<T, PK> implements GenericDao<T, PK> {
         ParameterizedType pt = (ParameterizedType) t;
         clazz = (Class) pt.getActualTypeArguments()[0];
     }
+
+    @Override
+    public Optional<T> findById(PK id) {
+
+        return SingleResultUtil.getSingleResultOrNull(entityManager.createQuery(
+                        "SELECT b " +
+                                "FROM " + clazz.getSimpleName() + " b " +
+                                "WHERE b.id = :paramId", clazz)
+                .setParameter("paramId", id));
+    }
+
 
 
     @Override

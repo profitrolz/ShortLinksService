@@ -3,6 +3,7 @@ package com.github.shortlinks.controller;
 
 import com.github.shortlinks.dto.LinkGenerateDto;
 import com.github.shortlinks.dto.LinkResponseDto;
+import com.github.shortlinks.dto.LinkStatDto;
 import com.github.shortlinks.service.abstracts.LinkService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,11 @@ public class ShortLinksController {
         String redirectLink = linkService.getOriginalLinkByShort("/l/" + shortLink);
         return new RedirectView(redirectLink);
 
+    }
+
+    @GetMapping("/stats/{shortLink}")
+    public ResponseEntity<LinkStatDto> getLinkStat(@PathVariable String shortLink) {
+        return ResponseEntity.ok(linkService.getLinkStat("/l/" + shortLink));
     }
 
 

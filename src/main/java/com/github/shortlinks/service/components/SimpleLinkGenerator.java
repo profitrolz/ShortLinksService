@@ -1,6 +1,5 @@
 package com.github.shortlinks.service.components;
 
-import com.github.shortlinks.service.abstracts.LinkGenerator;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
