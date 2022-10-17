@@ -37,11 +37,20 @@ class ShortLinksControllerTest extends ShortLinksApplicationTests {
     }
 
     @Test
+    @Transactional
+    @Rollback
     void performShortLink_getOk() throws Exception {
 
         mockMvc.perform(
                         get("/l/short_link1"))
                 .andExpect(redirectedUrl("http://original.link1"));
+
+        mockMvc.perform(get("/stats/short_link1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.link").value("/l/short_link1"))
+                .andExpect(jsonPath("$.original").value("http://original.link1"))
+                .andExpect(jsonPath("$.rank").value(5))
+                .andExpect(jsonPath("$.count").value(2));
     }
 
     @Test
