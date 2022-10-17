@@ -14,5 +14,4 @@ public interface LinkDao extends GenericDao<Link, Long> {
 
     LinkStatDto getLinkStat(String link);
 
-
 }

@@ -40,15 +40,10 @@ public class LinkDaoImpl extends AbstractGenericDao<Link, Long> implements LinkD
 
     @Override
     public LinkStatDto getLinkStat(String link) {
-        LinkStatDto linkStatDto = SingleResultUtil.getSingleResultOrNull(entityManager.createQuery("select new com.github.shortlinks.dto.LinkStatDto (l.shortLink, l.originalLink, 0L, l.requestsCount) from Link as l " +
-                        "where l.shortLink = :paramLink", LinkStatDto.class)
+        return SingleResultUtil.getSingleResultOrNull(entityManager.createQuery("select new com.github.shortlinks.dto.LinkStatDto (l.shortLink, l.originalLink, " +
+                        " (select count (l2.shortLink) + 1 from Link as l2 where l2.requestsCount > l.requestsCount), l.requestsCount) from Link as l " +
+                        " where l.shortLink = :paramLink", LinkStatDto.class)
                 .setParameter("paramLink", link)).orElseThrow(LinkNotFoundException::new);
-
-        long rank = SingleResultUtil.getSingleResultOrNull(entityManager.createQuery("Select count(ls) from Link ls where ls.requestsCount > :paramNumberOfRequest", Long.class)
-                .setParameter("paramNumberOfRequest", linkStatDto.getCount())).orElse(0L);
-        linkStatDto.setRank(++rank);
-
-        return linkStatDto;
     }
 
 }

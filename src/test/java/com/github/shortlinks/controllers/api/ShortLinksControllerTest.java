@@ -102,5 +102,112 @@ class ShortLinksControllerTest extends ShortLinksApplicationTests {
                 .andExpect(jsonPath("$.count").value(5));
     }
 
+    @Test
+    void getAllStat_page1AndCount2_getOk() throws Exception {
+        mockMvc.perform(get("/stats")
+                        .param("page", "1")
+                        .param("count", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+
+                .andExpect(jsonPath("$[0].link").value("/l/short_link6"))
+                .andExpect(jsonPath("$[0].original").value("http://original.link6"))
+                .andExpect(jsonPath("$[0].rank").value(1))
+                .andExpect(jsonPath("$[0].count").value(5))
+
+                .andExpect(jsonPath("$[1].link").value("/l/short_link4"))
+                .andExpect(jsonPath("$[1].original").value("http://original.link4"))
+                .andExpect(jsonPath("$[1].rank").value(2))
+                .andExpect(jsonPath("$[1].count").value(4));
+    }
+
+    @Test
+    void getAllStat_page2AndCount2_getOk() throws Exception {
+        mockMvc.perform(get("/stats")
+                        .param("page", "2")
+                        .param("count", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+
+                .andExpect(jsonPath("$[0].link").value("/l/short_link5"))
+                .andExpect(jsonPath("$[0].original").value("http://original.link5"))
+                .andExpect(jsonPath("$[0].rank").value(2))
+                .andExpect(jsonPath("$[0].count").value(4))
+
+
+                .andExpect(jsonPath("$[1].link").value("/l/short_link3"))
+                .andExpect(jsonPath("$[1].original").value("http://original.link3"))
+                .andExpect(jsonPath("$[1].rank").value(4))
+                .andExpect(jsonPath("$[1].count").value(3));
+    }
+
+    @Test
+    void getAllStat_page1AndCount4_getOk() throws Exception {
+        mockMvc.perform(get("/stats")
+                        .param("page", "1")
+                        .param("count", "4"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(4))
+
+                .andExpect(jsonPath("$[0].link").value("/l/short_link6"))
+                .andExpect(jsonPath("$[0].original").value("http://original.link6"))
+                .andExpect(jsonPath("$[0].rank").value(1))
+                .andExpect(jsonPath("$[0].count").value(5))
+
+                .andExpect(jsonPath("$[1].link").value("/l/short_link4"))
+                .andExpect(jsonPath("$[1].original").value("http://original.link4"))
+                .andExpect(jsonPath("$[1].rank").value(2))
+                .andExpect(jsonPath("$[1].count").value(4))
+
+
+                .andExpect(jsonPath("$[2].link").value("/l/short_link5"))
+                .andExpect(jsonPath("$[2].original").value("http://original.link5"))
+                .andExpect(jsonPath("$[2].rank").value(2))
+                .andExpect(jsonPath("$[2].count").value(4))
+
+                .andExpect(jsonPath("$[3].link").value("/l/short_link3"))
+                .andExpect(jsonPath("$[3].original").value("http://original.link3"))
+                .andExpect(jsonPath("$[3].rank").value(4))
+                .andExpect(jsonPath("$[3].count").value(3));
+    }
+
+    @Test
+    void getAllStat_default_getOk() throws Exception {
+        mockMvc.perform(get("/stats"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(6))
+
+                .andExpect(jsonPath("$[0].link").value("/l/short_link6"))
+                .andExpect(jsonPath("$[0].original").value("http://original.link6"))
+                .andExpect(jsonPath("$[0].rank").value(1))
+                .andExpect(jsonPath("$[0].count").value(5))
+
+                .andExpect(jsonPath("$[1].link").value("/l/short_link4"))
+                .andExpect(jsonPath("$[1].original").value("http://original.link4"))
+                .andExpect(jsonPath("$[1].rank").value(2))
+                .andExpect(jsonPath("$[1].count").value(4))
+
+
+                .andExpect(jsonPath("$[2].link").value("/l/short_link5"))
+                .andExpect(jsonPath("$[2].original").value("http://original.link5"))
+                .andExpect(jsonPath("$[2].rank").value(2))
+                .andExpect(jsonPath("$[2].count").value(4))
+
+                .andExpect(jsonPath("$[3].link").value("/l/short_link3"))
+                .andExpect(jsonPath("$[3].original").value("http://original.link3"))
+                .andExpect(jsonPath("$[3].rank").value(4))
+                .andExpect(jsonPath("$[3].count").value(3))
+
+                .andExpect(jsonPath("$[4].link").value("/l/short_link2"))
+                .andExpect(jsonPath("$[4].original").value("http://original.link2"))
+                .andExpect(jsonPath("$[4].rank").value(5))
+                .andExpect(jsonPath("$[4].count").value(2))
+
+
+                .andExpect(jsonPath("$[5].link").value("/l/short_link1"))
+                .andExpect(jsonPath("$[5].original").value("http://original.link1"))
+                .andExpect(jsonPath("$[5].rank").value(6))
+                .andExpect(jsonPath("$[5].count").value(1));
+    }
 
 }
