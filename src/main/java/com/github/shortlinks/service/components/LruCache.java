@@ -1,6 +1,5 @@
 package com.github.shortlinks.service.components;
 
-import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

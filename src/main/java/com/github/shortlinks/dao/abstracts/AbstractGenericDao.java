@@ -1,15 +1,11 @@
 package com.github.shortlinks.dao.abstracts;
 
 import com.github.shortlinks.dao.util.SingleResultUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractGenericDao<T, PK> implements GenericDao<T, PK> {
@@ -19,8 +15,7 @@ public abstract class AbstractGenericDao<T, PK> implements GenericDao<T, PK> {
 
     private final Class<T> clazz;
 
-    @SuppressWarnings("unchecked")
-    public AbstractGenericDao() {
+    protected AbstractGenericDao() {
         Type t = getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType) t;
         clazz = (Class) pt.getActualTypeArguments()[0];

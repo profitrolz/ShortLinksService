@@ -1,7 +1,6 @@
 package com.github.shortlinks.controller.advice;
 
 import com.github.shortlinks.exceptions.LinkNotFoundException;
-import org.apache.coyote.Request;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

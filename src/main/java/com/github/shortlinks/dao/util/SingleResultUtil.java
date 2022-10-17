@@ -8,9 +8,9 @@ public final class SingleResultUtil {
     private SingleResultUtil() {
     }
 
-    public static <T> Optional<T> getSingleResultOrNull(TypedQuery<T> var) {
+    public static <T> Optional<T> getSingleResultOrNull(TypedQuery<T> query) {
         try {
-            return Optional.of(var.getSingleResult());
+            return Optional.of(query.getSingleResult());
         } catch (Exception e) {
             return Optional.empty();
         }
